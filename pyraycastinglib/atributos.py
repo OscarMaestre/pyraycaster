@@ -49,7 +49,7 @@ class Mapa(object):
         ]
         return mapa
     
-def build_objetos(anchura=640, altura=480, fov=60, x0=5,y0=5,angulo_jugador=90,
+def build_objetos(anchura=640, altura=480, fov=60, x0=2,y0=2,angulo_jugador=90,
                   precision_raycasting=64):
     pantalla=Pantalla.build_pantalla(anchura,altura)
     render=Render(30)
@@ -62,3 +62,20 @@ def build_objetos(anchura=640, altura=480, fov=60, x0=5,y0=5,angulo_jugador=90,
 def grados_a_radianes(grados):
     pi=math.pi
     return grados*pi/180
+
+
+class Rayo(object):
+    def __init__(self, x, y, angulo_en_grados) -> None:
+        self.x=x
+        self.y=y
+        self.x_int=math.floor(self.x)
+        self.y_int=math.floor(self.y)
+        self.angulo=angulo_en_grados
+        self.radianes=grados_a_radianes(self.angulo)
+        self.coseno=math.cos(self.radianes)/64
+        self.seno=math.sin(self.radianes)/64
+    def avanzar_rayo(self):
+        self.x+=self.coseno
+        self.y+=self.seno
+        self.x_int=math.floor(self.x)
+        self.y_int=math.floor(self.y)
